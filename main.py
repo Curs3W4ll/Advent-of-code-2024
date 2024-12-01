@@ -1,9 +1,8 @@
-#!/usr/bin/env python3.10
+#!/usr/bin/env python3
 
 from sys import stdin,argv
 from datetime import datetime
 from dataclasses import dataclass
-from typing import List
 
 
 asciiart: str = """
@@ -36,26 +35,26 @@ asciiartsnow: str = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 class Arguments:
     dayToLaunch: int = datetime.today().day
     gettingContentFromStdin: bool = False
-    fileToGetContentFrom: str = None
+    fileToGetContentFrom: str|None = None
 
-    def __init__(self, dayToLaunch: int = datetime.today().day, gettingContentFromStdin: bool = False, fileToGetContentFrom: str = None):
+    def __init__(self, dayToLaunch: int = datetime.today().day, gettingContentFromStdin: bool = False, fileToGetContentFrom: str|None = None):
         self.dayToLaunch = dayToLaunch
         self.gettingContentFromStdin = gettingContentFromStdin
         self.fileToGetContentFrom = fileToGetContentFrom
 
 
-def readInput() -> List[str]:
+def readInput() -> list[str]:
     print("Reading from stdin...")
     input = []
     for line in stdin:
         input.append(line.rstrip('\n'))
     return input
 
-def readFile(filePath: str) -> List[str]:
-    input: List[str] = []
-    content: List[str] = []
+def readFile(filePath: str) -> list[str]:
+    input: list[str] = []
+    content: list[str] = []
     with open(filePath) as f:
-        input: List[str] = f.readlines()
+        input: list[str] = f.readlines()
 
     [content.append(elem.rstrip('\n')) for elem in input]
     print(f"Content got from {filePath}")
@@ -77,7 +76,7 @@ def readArgs():
 
 def entrypoint():
     args: Arguments = readArgs()
-    content: List[str] = None
+    content: list[str]|None = None
 
     if (args.dayToLaunch > 25 or args.dayToLaunch < 1):
         args.dayToLaunch = 1

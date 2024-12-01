@@ -1,6 +1,4 @@
-from typing import List
-
-def run(input: List[str]):
+def run(input: list[str]):
     l1,l2 = [int(i.split()[0]) for i in input],[int(i.split()[1]) for i in input]
     total = 0
     similarityScore = 0
