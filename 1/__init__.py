@@ -8,9 +8,7 @@ def run(input: list[str]):
 
     for i in range(len(l1)):
         total += abs(l1[i] - l2[i])
-    print(f"Total distance is: {total}")
+        similarityScore += (l1[i] * l2.count(l1[i]))
 
-    for i in range(len(l1)):
-        if l1[i] in l2:
-            similarityScore += (l1[i] * l2.count(l1[i]))
+    print(f"Total distance is: {total}")
     print(f"Similarity score is: {similarityScore}")
