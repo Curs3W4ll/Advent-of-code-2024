@@ -44,11 +44,25 @@ class Map:
             return True
         return False
 
-    def computeAntinodes(self):
+    def computeAntinodes(self, resonant: bool = False):
         for locations in self.antennasLocations.values():
             for a1 in range(len(locations)):
                 for a2 in range(a1 + 1, len(locations)):
-                        vector: tuple[int, int] = locations[a1][0] - locations[a2][0], locations[a1][1] - locations[a2][1]
+                    vector: tuple[int, int] = locations[a1][0] - locations[a2][0], locations[a1][1] - locations[a2][1]
+                    if resonant:
+                        i = 0
+                        p1: tuple[int, int] = locations[a1][0] + (vector[0] * i), locations[a1][1] + (vector[1] * i)
+                        while not self.isPosOutOfBounds(p1):
+                            self.map[p1[0]][p1[1]].antinode = True
+                            i += 1
+                            p1 = locations[a1][0] + (vector[0] * i), locations[a1][1] + (vector[1] * i)
+                        i = 0
+                        p2: tuple[int, int] = locations[a2][0] - (vector[0] * i), locations[a2][1] - (vector[1] * i)
+                        while not self.isPosOutOfBounds(p2):
+                            self.map[p2[0]][p2[1]].antinode = True
+                            i += 1
+                            p2 = locations[a2][0] - (vector[0] * i), locations[a2][1] - (vector[1] * i)
+                    else:
                         p1: tuple[int, int] = locations[a1][0] + vector[0], locations[a1][1] + vector[1]
                         if not self.isPosOutOfBounds(p1):
                             self.map[p1[0]][p1[1]].antinode = True
@@ -81,8 +95,9 @@ class Map:
             print()
 
 def run(input: list[str]):
+    repeating = True
     map = Map(input)
 
-    map.computeAntinodes()
+    map.computeAntinodes(repeating)
     map.dumpVisitedMap()
-    print(f"There are {map.countAntinodes()} unique locations containing an antinode")
+    print(f"There are {map.countAntinodes()} unique locations containing an antinode ({'' if repeating else 'not '}counting repeating)")
