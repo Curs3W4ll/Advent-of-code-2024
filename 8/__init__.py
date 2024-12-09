@@ -1,16 +1,3 @@
-# class Dir:
-#     TOP = "top"
-#     RIGHT = "right"
-#     BOTTOM = "bottom"
-#     LEFT = "left"
-
-# directions: dict[str, tuple[int, int]] = {
-#     Dir.TOP: (-1, 0),
-#     Dir.RIGHT: (0, 1),
-#     Dir.BOTTOM: (1, 0),
-#     Dir.LEFT: (0, -1),
-# }
-
 class MapCase:
     antinode: bool
     antenna: None|str
