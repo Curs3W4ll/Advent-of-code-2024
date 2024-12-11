@@ -1,30 +1,51 @@
-def dumpStones(stones: list[int]):
-    for stone in stones:
-        print(stone, end=" ")
-    print()
+def getNewStones(stone: int) -> list[int]:
+    stoneAsString = str(stone)
+    if stone == 0:
+        return [1]
+    elif len(stoneAsString) % 2 == 0:
+        middle = len(str(stone)) // 2
+        return [int(stoneAsString[:middle]), int(stoneAsString[middle:])]
+    return [stone * 2024]
 
-def blink(stones: list[int], times: int = 1):
+def getStoneNbr(stones: dict[int, int]) -> int:
+    total = 0
+
+    for nbr in stones.values():
+        total += nbr
+
+    return total
+
+def addInDict(d: dict[int, int], stone: int, times: int):
+    if stone in d:
+        d[stone] += times
+    else:
+        d[stone] = times
+
+    return d
+
+def blink(stones: dict[int, int], times: int = 1):
     print(f"{times} blinks remaining")
 
     if times < 1:
         return stones
 
-    newStones: list[int] = []
+    newStones: dict[int, int] = {}
 
-    for stone in stones:
-        stoneAsString = str(stone)
-        if stone == 0:
-            newStones.append(1)
-        elif len(stoneAsString) % 2 == 0:
-            middle = len(str(stone)) // 2
-            newStones.append(int(stoneAsString[:middle]))
-            newStones.append(int(stoneAsString[middle:]))
-        else:
-            newStones.append(stone * 2024)
+    for stone, nbr in stones.items():
+        for stone in getNewStones(stone):
+            addInDict(newStones, stone, nbr)
 
     return blink(newStones, times - 1)
 
 def run(input: list[str]):
-    stones: list[int] = [int(x) for x in input[0].split()]
+    stones: dict[int, int] = {}
 
-    print(f"After blinking 25 times, we now have {len(blink(stones, 25))} stones")
+    for e in input[0].split():
+        x = int(e)
+        if x in stones:
+            stones[x] += 1
+        else:
+            stones[x] = 1
+
+    print(f"After blinking 25 times, we now have {getStoneNbr(blink(stones, 25))} stones")
+    print(f"After blinking 75 times, we now have {getStoneNbr(blink(stones, 75))} stones")
